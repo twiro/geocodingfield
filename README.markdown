@@ -3,7 +3,7 @@
 * Version: 0.6
 * Authors: Jonas Coch <jonas@klaftertief.de>
 * Build Date: 2010-06-20
-* Requirements: Symphony 2.0.7
+* Requirements: Symphony 2.0.6
 
 
 ## Installation

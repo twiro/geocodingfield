@@ -18,7 +18,7 @@
 		public function __construct(&$parent) {
 			parent::__construct($parent);
 			
-			$this->_name = 'Geocoding';
+			$this->_name = __('Geocoding');
 			$this->_driver = $this->_engine->ExtensionManager->create('geocodingfield');
 			
 			// Set defaults:
@@ -64,7 +64,7 @@
 			$group->setAttribute('class', 'group');
 			
 			$div = new XMLElement('div');
-			$label = Widget::Label('Expression');
+			$label = Widget::Label(__('Expression'));
 			$label->appendChild(Widget::Input(
 				"fields[{$order}][expression]",
 				$this->get('expression')
@@ -73,10 +73,7 @@
 			$help = new XMLElement('p');
 			$help->setAttribute('class', 'help');
 			
-			$help->setValue('
-				To access the other fields, use XPath: <code>{entry/field-one}
-				static text {entry/field-two}</code>.
-			');
+			$help->setValue(__('To access the other fields, use XPath: <code>{entry/field-one} static text {entry/field-two}</code>.'));
 			
 			$div->appendChild($label);
 			$div->appendChild($help);
@@ -94,7 +91,7 @@
 				$input->setAttribute('checked', 'checked');
 			}
 			
-			$label->setValue($input->generate() . ' Hide this field on publish page');
+			$label->setValue($input->generate() . __(' Hide this field on publish page'));
 			$wrapper->appendChild($label);
 			
 			$this->appendShowColumnCheckbox($wrapper);

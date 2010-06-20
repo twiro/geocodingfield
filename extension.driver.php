@@ -195,16 +195,16 @@
 			$group = new XMLElement('fieldset');
 			$group->setAttribute('class', 'settings');
 			$group->appendChild(
-				new XMLElement('legend', 'Geocoding Field')
+				new XMLElement('legend', __('Geocoding Field'))
 			);
 			
-			$label = Widget::Label('Google Maps API Key');
+			$label = Widget::Label(__('Google Maps API Key'));
 			$label->appendChild(Widget::Input(
 				'settings[geocoding-field][google-api-key]', General::Sanitize($this->getMapsAPI())
 			));
 			$group->appendChild($label);
 			
-			$group->appendChild(new XMLElement('p', 'Get a Google Maps API key from the <a href="http://code.google.com/apis/maps/index.html">Google Maps site</a>.', array('class' => 'help')));
+			$group->appendChild(new XMLElement('p', __('Get a Google Maps API key from the <a href="http://code.google.com/apis/maps/index.html">Google Maps site</a>.'), array('class' => 'help')));
 
 			$context['wrapper']->appendChild($group);
 		}
@@ -215,7 +215,7 @@
 				@in_array(
 					'geocoding', $context['selected']
 				),
-				'Geocoding'
+				__('Geocoding')
 			);
 		}
 		
