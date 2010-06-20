@@ -11,3 +11,11 @@
 1. Upload the 'geocodingfield' folder in this archive to your Symphony 'extensions' folder.
 2. Enable it by selecting the "Field: Geocoding", choose Enable from the with-selected menu, then click Apply.
 3. You can now add the "Geocoding" field to your sections.
+
+## Credits
+
+This extensions is heavily based on the [Reflection Field][1] and the [Map Location Field][2].
+
+
+[1]: http://symphony-cms.com/download/extensions/view/20737/
+[2]: http://symphony-cms.com/download/extensions/view/35942/
