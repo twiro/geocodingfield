@@ -11,8 +11,8 @@
 		public function about() {
 			return array(
 				'name'			=> 'Field: Geocoding',
-				'version'		=> '0.6',
-				'release-date'	=> '2010-06-20',
+				'version'		=> '0.7',
+				'release-date'	=> '2011-02-01',
 				'author'		=> array(
 					'name'			=> 'Jonas Coch',
 					'website'		=> 'http://klaftertief.de/',
@@ -41,6 +41,16 @@
 			return true;
 		}
 		
+		public function update($previousVersion){
+			if (version_compare($previousVersion, '0.6', '<')) {
+
+				Symphony::Configuration()->remove('geocoding-field');
+				Administration::instance()->saveConfig();
+			}
+
+			return true;
+		}
+		
 		public function getSubscribedDelegates() {
 			return array(
 				array(
@@ -52,11 +62,6 @@
 					'page'		=> '/blueprints/events/edit/',
 					'delegate'	=> 'AppendEventFilter',
 					'callback'	=> 'appendEventFilter'
-				),
-				array(
-					'page'		=> '/system/preferences/',
-					'delegate'	=> 'AddCustomPreferenceFieldsets',
-					'callback'	=> 'addCustomPreferenceFieldsets'
 				),
 				array(
 					'page'		=> '/publish/new/',
@@ -80,10 +85,6 @@
 		Utilities:
 	-------------------------------------------------------------------------*/
 		
-		public function getMapsAPI() {
-			return $this->_Parent->Configuration->get('google-api-key', 'geocoding-field');
-		}
-				
 		public function getXPath($entry) {
 			$entry_xml = new XMLElement('entry');
 			$section_id = $entry->_fields['section_id'];
@@ -188,24 +189,6 @@
 	/*-------------------------------------------------------------------------
 		Delegates:
 	-------------------------------------------------------------------------*/
-		
-		public function addCustomPreferenceFieldsets($context) {
-			$group = new XMLElement('fieldset');
-			$group->setAttribute('class', 'settings');
-			$group->appendChild(
-				new XMLElement('legend', __('Geocoding Field'))
-			);
-			
-			$label = Widget::Label(__('Google Maps API Key'));
-			$label->appendChild(Widget::Input(
-				'settings[geocoding-field][google-api-key]', General::Sanitize($this->getMapsAPI())
-			));
-			$group->appendChild($label);
-			
-			$group->appendChild(new XMLElement('p', __('Get a Google Maps API key from the <a href="http://code.google.com/apis/maps/index.html">Google Maps site</a>.'), array('class' => 'help')));
-
-			$context['wrapper']->appendChild($group);
-		}
 		
 		public function appendEventFilter($context) {
 			$context['options'][] = array(

@@ -210,7 +210,7 @@
 
 				$ch = new Gateway;
 				$ch->init();
-				$ch->setopt('URL', 'http://maps.google.com/maps/geo?q='.urlencode($address).'&output=json&key='.$this->_engine->Configuration->get('google-api-key', 'geocoding-field'));
+				$ch->setopt('URL', 'http://maps.google.com/maps/geo?q='.urlencode($address).'&output=json');
 				$response = json_decode($ch->exec());
 
 				$coordinates = $response->Placemark[0]->Point->coordinates;
