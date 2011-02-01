@@ -42,7 +42,7 @@
 		}
 		
 		public function update($previousVersion){
-			if (version_compare($previousVersion, '0.6', '<')) {
+			if (version_compare($previousVersion, '0.7', '<')) {
 
 				Symphony::Configuration()->remove('geocoding-field');
 				Administration::instance()->saveConfig();
