@@ -111,7 +111,7 @@
 				'hide'				=> $this->get('hide')
 			);
 			
-			Symphony::Database()>query("
+			Symphony::Database()->query("
 				DELETE FROM
 					`tbl_fields_{$handle}`
 				WHERE
