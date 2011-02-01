@@ -19,7 +19,7 @@
 			parent::__construct($parent);
 			
 			$this->_name = __('Geocoding');
-			$this->_driver = $this->_engine->ExtensionManager->create('geocodingfield');
+			$this->_driver = Symphony::Engine()->ExtensionManager->create('geocodingfield');
 			
 			// Set defaults:
 			$this->set('show_column', 'yes');
@@ -29,7 +29,7 @@
 		public function createTable() {
 			$field_id = $this->get('id');
 			
-			return $this->_engine->Database->query("
+			return Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_entries_data_{$field_id}` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`entry_id` INT(11) UNSIGNED NOT NULL,
@@ -111,7 +111,7 @@
 				'hide'				=> $this->get('hide')
 			);
 			
-			$this->Database->query("
+			Symphony::Database()>query("
 				DELETE FROM
 					`tbl_fields_{$handle}`
 				WHERE
@@ -119,7 +119,7 @@
 				LIMIT 1
 			");
 			
-			return $this->Database->insert($fields, "tbl_fields_{$handle}");
+			return Symphony::Database()->insert($fields, "tbl_fields_{$handle}");
 		}
 		
 	/*-------------------------------------------------------------------------
@@ -200,7 +200,7 @@
 			$coordinates = null;
 
 			$cache_id = md5('maplocationfield_' . $address);
-			$cache = new Cacheable($this->_engine->Database);
+			$cache = new Cacheable(Symphony::Database());
 			$cachedData = $cache->check($cache_id);	
 
 			// no data has been cached
@@ -280,7 +280,7 @@
 			self::$ready = true;
 			
 			// Save:
-			$result = $this->Database->update(
+			$result = Symphony::Database()->update(
 				array(
 					'latitude'	=> $lat,
 					'longitude'	=> $lng

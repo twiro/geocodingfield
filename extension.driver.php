@@ -23,13 +23,11 @@
 		}
 		
 		public function uninstall() {
-			$this->_Parent->Database->query("DROP TABLE `tbl_fields_geocoding`");
-			$this->_Parent->Configuration->remove('google-api-key', 'geocoding-field');
-			$this->_Parent->saveConfig();
+			Symphony::Database()->query("DROP TABLE `tbl_fields_geocoding`");
 		}
 		
 		public function install() {
-			$this->_Parent->Database->query("
+			Symphony::Database()->query("
 				CREATE TABLE IF NOT EXISTS `tbl_fields_geocoding` (
 					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					`field_id` INT(11) UNSIGNED NOT NULL,
@@ -97,7 +95,7 @@
 			
 			if (is_array($associated) and !empty($associated)) {
 				foreach ($associated as $section => $count) {
-					$handle = $this->_Parent->Database->fetchVar('handle', 0, "
+					$handle = Symphony::Database()->fetchVar('handle', 0, "
 						SELECT
 							s.handle
 						FROM
@@ -115,7 +113,7 @@
 			foreach ($data as $field_id => $values) {
 				if (empty($field_id)) continue;
 				
-				$field =& $entry->_Parent->fieldManager->fetch($field_id);
+				$field =& Symphony::Engine()->fieldManager->fetch($field_id);
 				$field->appendFormattedElement($entry_xml, $values, false);
 			}
 			
