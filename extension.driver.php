@@ -87,8 +87,8 @@
 		
 		public function getXPath($entry) {
 			$entry_xml = new XMLElement('entry');
-			$section_id = $entry->_fields['section_id'];
-			$data = $entry->getData(); $fields = array();
+			$data = $entry->getData();
+			$fields = array();
 			
 			$entry_xml->setAttribute('id', $entry->get('id'));
 			
@@ -110,12 +110,14 @@
 				}
 			}
 			
+			$entryManager = new EntryManager(Symphony::Engine());
+			
 			// Add fields:
 			foreach ($data as $field_id => $values) {
 				if (empty($field_id)) continue;
 				
-				$field =& Symphony::Engine()->fieldManager->fetch($field_id);
-				$field->appendFormattedElement($entry_xml, $values, false);
+				$field = $entryManager->fieldManager->fetch($field_id);
+				$field->appendFormattedElement($entry_xml, $values, false, null);
 			}
 			
 			$xml = new XMLElement('data');
