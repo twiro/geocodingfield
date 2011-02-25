@@ -24,12 +24,6 @@
 		'Geocoding Field' =>
 		'Geokodierungs Feld',
 
-		'Google Maps API Key' =>
-		'Google Maps API Schlüssel',
-		
-		'Get a Google Maps API key from the <a href="http://code.google.com/apis/maps/index.html">Google Maps site</a>.' =>
-		'Erhalte einen Google Maps API Schlüssel von der <a href="http://code.google.com/intl/de/apis/maps/signup.html">Google Maps Seite</a>.',
-		
 		'Expression' =>
 		'Ausdruck',
 		
