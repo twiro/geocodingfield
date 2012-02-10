@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension id="geocodingfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+	<name>Geocoding</name>
+	<description>Populates fields with geocoding information using the combined values of other fields.</description>
+	<repo type="github">https://github.com/klaftertief/geocodingfield</repo>
+	<url type="discuss">http://symphony-cms.com/discuss/thread/46536/</url>
+	<types>
+		<type>Field Types</type>
+	</types>
+	<authors>
+		<author>
+			<name github="klaftertief" symphony="klaftertief">Jonas Coch</name>
+			<website>http://klaftertief.de</website>
+		</author>
+	</authors>
+	<releases>
+		<release version="0.7" date="2011-02-01" min="2.2" />
+	</releases>
+</extension>
