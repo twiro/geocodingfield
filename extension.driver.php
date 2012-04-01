@@ -105,13 +105,11 @@
 				}
 			}
 			
-			$entryManager = new EntryManager(Symphony::Engine());
-			
 			// Add fields:
 			foreach ($data as $field_id => $values) {
 				if (empty($field_id)) continue;
 				
-				$field = $entryManager->fieldManager->fetch($field_id);
+				$field = FieldManager::fetch($field_id);
 				$field->appendFormattedElement($entry_xml, $values, false, null);
 			}
 			
