@@ -181,14 +181,20 @@
 			$wrapper->appendChild($element);
 		}
 		
-		public function prepareTableValue($data, XMLElement $link = null) {
+		public function prepareTableValue($data, XMLElement $link = null, $entry_id = null) {
 			if (empty($data)) return;
-			
-			return parent::prepareTableValue(
-				array(
-					'value' => 'lat: '.$data['latitude'].', lng: '.$data['longitude']
-				), $link
+
+			$img = sprintf(
+				"<img src='http://maps.google.com/maps/api/staticmap?zoom=6&size=160x90&sensor=false&markers=color:red|size:small|%s' alt=''/>",
+				implode(',', array($data['latitude'], $data['longitude']))
 			);
+
+			if ($link) {
+				$link->setValue($img);
+				return $link->generate();
+			}
+
+			return $img;
 		}
 		
 	/*-------------------------------------------------------------------------
