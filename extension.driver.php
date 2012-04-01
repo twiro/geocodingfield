@@ -8,36 +8,31 @@
 		
 		protected static $fields = array();
 		
-		public function about() {
-			return array(
-				'name'			=> 'Field: Geocoding',
-				'version'		=> '0.7',
-				'release-date'	=> '2011-02-01',
-				'author'		=> array(
-					'name'			=> 'Jonas Coch',
-					'website'		=> 'http://klaftertief.de/',
-					'email'			=> 'jonas@klaftertief.de'
-				),
-				'description'	=> 'Populates fields with geocoding information using the combined values of other fields.'
-			);
-		}
-		
 		public function uninstall() {
-			Symphony::Database()->query("DROP TABLE `tbl_fields_geocoding`");
+			if(parent::uninstall() == true){
+				Symphony::Database()->query("DROP TABLE `tbl_fields_geocoding`");
+				return true;
+			}
+
+			return false;
 		}
 		
 		public function install() {
-			Symphony::Database()->query("
-				CREATE TABLE IF NOT EXISTS `tbl_fields_geocoding` (
-					`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-					`field_id` INT(11) UNSIGNED NOT NULL,
-					`expression` VARCHAR(255) DEFAULT NULL,
-					`hide` ENUM('yes', 'no') DEFAULT 'no',
-					PRIMARY KEY (`id`),
-					KEY `field_id` (`field_id`)
-				)
-			");
-			
+			try {
+				Symphony::Database()->query("
+					CREATE TABLE IF NOT EXISTS `tbl_fields_geocoding` (
+						`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+						`field_id` INT(11) UNSIGNED NOT NULL,
+						`expression` VARCHAR(255) DEFAULT NULL,
+						`hide` ENUM('yes', 'no') DEFAULT 'no',
+						PRIMARY KEY (`id`),
+						KEY `field_id` (`field_id`)
+					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+				");
+			} catch (Exception $e) {
+				return false;
+			}
+
 			return true;
 		}
 		
