@@ -15,11 +15,11 @@
 		Definition:
 	-------------------------------------------------------------------------*/
 		
-		public function __construct(&$parent) {
+		public function __construct() {
 			parent::__construct($parent);
 			
 			$this->_name = __('Geocoding');
-			$this->_driver = Symphony::Engine()->ExtensionManager->create('geocodingfield');
+			$this->_driver = Symphony::ExtensionManager()->create('geocodingfield');
 			
 			// Set defaults:
 			$this->set('show_column', 'yes');
@@ -39,7 +39,7 @@
 					KEY `entry_id` (`entry_id`),
 					KEY `latitude` (`latitude`),
 					KEY `longitude` (`longitude`)
-				)
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 			");
 		}
 		
