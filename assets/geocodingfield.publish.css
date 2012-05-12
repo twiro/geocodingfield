@@ -1,0 +1,9 @@
+.field-geocoding .frame img {
+	float: left;
+}
+.field-geocoding .frame div {
+	margin-left: 190px;
+}
+	.field-geocoding .frame div label + label {
+		margin-bottom: 0;
+	}

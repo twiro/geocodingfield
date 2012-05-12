@@ -16,7 +16,7 @@
 	-------------------------------------------------------------------------*/
 		
 		public function __construct() {
-			parent::__construct($parent);
+			parent::__construct();
 			
 			$this->_name = __('Geocoding');
 			$this->_driver = Symphony::ExtensionManager()->create('geocodingfield');
@@ -56,13 +56,7 @@
 			
 			$order = $this->get('sortorder');
 			
-		/*---------------------------------------------------------------------
-			Expression
-		---------------------------------------------------------------------*/
-			
-			$group = new XMLElement('div');
-			$group->setAttribute('class', 'group');
-			
+			// Expression
 			$div = new XMLElement('div');
 			$label = Widget::Label(__('Expression'));
 			$label->appendChild(Widget::Input(
@@ -77,14 +71,14 @@
 			
 			$div->appendChild($label);
 			$div->appendChild($help);
-			$group->appendChild($div);
-			$wrapper->appendChild($group);
-			
-		/*---------------------------------------------------------------------
-			Hide input
-		---------------------------------------------------------------------*/
+			$wrapper->appendChild($div);
+
+			// Visibility settings
+			$group = new XMLElement('div');
+			$group->setAttribute('class', 'two columns');
 			
 			$label = Widget::Label();
+			$label->setAttribute('class', 'column');
 			$input = Widget::Input("fields[{$order}][hide]", 'yes', 'checkbox');
 			
 			if ($this->get('hide') == 'yes') {
@@ -92,9 +86,11 @@
 			}
 			
 			$label->setValue($input->generate() . __(' Hide this field on publish page'));
-			$wrapper->appendChild($label);
+			$group->appendChild($label);
 			
-			$this->appendShowColumnCheckbox($wrapper);
+			$this->appendShowColumnCheckbox($group);
+			
+			$wrapper->appendChild($group);
 		}
 		
 		public function commit() {
@@ -126,23 +122,48 @@
 		Publish:
 	-------------------------------------------------------------------------*/
 		
-		public function displayPublishPanel(&$wrapper, $data = null, $flagWithError = null, $prefix = null, $postfix = null) {
-			$sortorder = $this->get('sortorder');
-			$element_name = $this->get('element_name');
+		public function displayPublishPanel(XMLElement &$wrapper, $data = null, $flagWithError = null, $fieldnamePrefix = null, $fieldnamePostfix = null, $entry_id = null) {
+			if (class_exists('Administration') && Administration::instance()->Page) {
+				Administration::instance()->Page->addStylesheetToHead(URL . '/extensions/geocodingfield/assets/geocodingfield.publish.css', 'screen', 246);
+			}
+			
+			$elementName = $this->get('element_name');
 			
 			if ($this->get('hide') != 'yes') {
-				$value = '';
-				if (!empty($data)) {
-					$value = 'lat: '.$data['latitude'].', lng: '.$data['longitude'];
-				}
-				$label = Widget::Label($this->get('label'));
-				$label->appendChild(
+				$frame = new XMLElement('div', null, array('class' => 'inline frame'));
+				$map = new XMLElement(
+					'img',
+					null,
+					array(
+						'alt' => '',
+						'src' => sprintf(
+							'http://maps.google.com/maps/api/staticmap?zoom=7&size=180x100&sensor=false&markers=color:red|size:small|%s',
+							implode(',', array($data['latitude'], $data['longitude']))
+						)
+				));
+				$div = new XMLElement('div');
+				$latitude = Widget::Label(__('Latitude'));
+				$latitude->appendChild(
 					Widget::Input(
-						"fields{$prefix}[$element_name]{$postfix}",
-						$value, 'text', array('disabled' => 'disabled')
+						"fields{$fieldnamePrefix}[$elementName][latitude]{$fieldnamePostfix}",
+						$data['latitude'], 'text', array('disabled' => 'disabled')
 					)
 				);
-				$wrapper->appendChild($label);
+				$longitude = Widget::Label(__('Longitude'));
+				$longitude->appendChild(
+					Widget::Input(
+						"fields{$fieldnamePrefix}[$elementName][longitude]{$fieldnamePostfix}",
+						$data['longitude'], 'text', array('disabled' => 'disabled')
+					)
+				);
+				$div->appendChild($latitude);
+				$div->appendChild($longitude);
+				$frame->appendChild($map);
+				$frame->appendChild($div);
+				$wrapper->appendChild(new XMLElement('p', $this->get('label'), array('class' => 'label')));
+				$wrapper->appendChild($frame);
+			} else {
+				$wrapper->addClass('irrelevant');
 			}
 		}
 		
@@ -364,5 +385,3 @@
 	}
 		
 	}
-	
-?>
