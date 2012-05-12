@@ -47,9 +47,9 @@ The XML output of the field looks like this:
 
 	<location latitude="51.6614" longitude="-0.40042"/>
 
-The first two attributes are the latitude/longitude of the marker on the map. The `<map>` element contains any information you need to rebuild the Google Map on the frontend of your website: its zoom level, centre-point and your API key.
+The two attributes are the latitude/longitude of the location.
 
-If you are filtering using the Map Location Field using a "within" filter then you will see an additional `<distance>` element:
+If you are filtering using the Geocoding Field using a "within" filter then you will see an additional `<distance>` element:
 
 	<location latitude="51.6614" longitude="-0.40042">
 		<distance from="51.6245572,-0.4674079" distance="3.8" unit="miles" />
