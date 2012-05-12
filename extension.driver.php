@@ -49,16 +49,6 @@
 		public function getSubscribedDelegates() {
 			return array(
 				array(
-					'page'		=> '/blueprints/events/new/',
-					'delegate'	=> 'AppendEventFilter',
-					'callback'	=> 'appendEventFilter'
-				),
-				array(
-					'page'		=> '/blueprints/events/edit/',
-					'delegate'	=> 'AppendEventFilter',
-					'callback'	=> 'appendEventFilter'
-				),
-				array(
 					'page'		=> '/publish/new/',
 					'delegate'	=> 'EntryPostCreate',
 					'callback'	=> 'compileBackendFields'
@@ -181,27 +171,13 @@
 			
 		}
 
-	/*-------------------------------------------------------------------------
-		Delegates:
-	-------------------------------------------------------------------------*/
-		
-		public function appendEventFilter($context) {
-			$context['options'][] = array(
-				'geocoding',
-				@in_array(
-					'geocoding', $context['selected']
-				),
-				__('Geocoding')
-			);
-		}
-		
-	/*-------------------------------------------------------------------------
-		Fields:
-	-------------------------------------------------------------------------*/
-
 		public function registerField($field) {
 			self::$fields[] = $field;
 		}
+
+	/*-------------------------------------------------------------------------
+		Delegates:
+	-------------------------------------------------------------------------*/
 
 		public function compileBackendFields($context) {
 			foreach (self::$fields as $field) {
@@ -216,5 +192,3 @@
 		}
 
 	}
-	
-?>
