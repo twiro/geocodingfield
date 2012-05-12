@@ -199,6 +199,14 @@
 				'longitude' => $data['longitude'],
 			));
 			
+			if (count($this->_filter_origin['latitude']) > 0) {
+				$distance = new XMLElement('distance');
+				$distance->setAttribute('from', $this->_filter_origin['latitude'] . ',' . $this->_filter_origin['longitude']);
+				$distance->setAttribute('distance', Extension_GeocodingField::geoDistance($this->_filter_origin['latitude'], $this->_filter_origin['longitude'], $data['latitude'], $data['longitude'], $this->_filter_origin['unit']));
+				$distance->setAttribute('unit', ($this->_filter_origin['unit'] == 'k') ? 'km' : 'miles');
+				$element->appendChild($distance);
+			}
+
 			$wrapper->appendChild($element);
 		}
 		
@@ -321,67 +329,67 @@
 		Filtering:
 	-------------------------------------------------------------------------*/
 		
-	function buildDSRetrivalSQL($data, &$joins, &$where, $andOperation=false){
+		function buildDSRetrivalSQL($data, &$joins, &$where, $andOperation=false){
 		
-		// Symphony by default splits filters by commas. We want commas, so 
-		// concatenate filters back together again putting commas back in
-		$data = join(',', $data);
+			// Symphony by default splits filters by commas. We want commas, so 
+			// concatenate filters back together again putting commas back in
+			$data = join(',', $data);
 		
-		/*
-		within 20 km of 10.545, -103.1
-		within 2km of 1 West Street, Burleigh Heads
-		within 500 miles of England
-		*/
+			/*
+			within 20 km of 10.545, -103.1
+			within 2km of 1 West Street, Burleigh Heads
+			within 500 miles of England
+			*/
 		
-		// is a "within" radius filter
-		if(preg_match('/^within/i', $data)){
-			$field_id = $this->get('id');
+			// is a "within" radius filter
+			if(preg_match('/^within/i', $data)){
+				$field_id = $this->get('id');
 
-			// parse out individual filter parts
-			preg_match('/^within ([0-9]+)\s?(km|mile|miles) of (.+)$/', $data, $filters);
+				// parse out individual filter parts
+				preg_match('/^within ([0-9]+)\s?(km|mile|miles) of (.+)$/', $data, $filters);
 
-			$radius = trim($filters[1]);
-			$unit = strtolower(trim($filters[2]));
-			$origin = trim($filters[3]);
-			
-			$lat = null;
-			$lng = null;
-			
-			// is a lat/long pair
-			if (preg_match('/^(-?[.0-9]+),\s?(-?[.0-9]+)$/', $origin, $latlng)) {
-				$lat = $latlng[1];
-				$lng = $latlng[2];
+				$radius = trim($filters[1]);
+				$unit = strtolower(trim($filters[2]));
+				$origin = trim($filters[3]);
+
+				$lat = null;
+				$lng = null;
+
+				// is a lat/long pair
+				if (preg_match('/^(-?[.0-9]+),\s?(-?[.0-9]+)$/', $origin, $latlng)) {
+					$lat = $latlng[1];
+					$lng = $latlng[2];
+				}
+				// otherwise the origin needs geocoding
+				else {
+					$geocode = $this->__geocodeAddress($origin);
+					if ($geocode) $geocode = explode(',', $geocode);
+					$lat = trim($geocode[0]);
+					$lng = trim($geocode[1]);
+				}
+
+				// if we don't have a decent set of coordinates, we can't query
+				if (is_null($lat) || is_null($lng)) return;
+
+				$this->_filter_origin['latitude'] = $lat;
+				$this->_filter_origin['longitude'] = $lng;
+				$this->_filter_origin['unit'] = $unit[0];
+
+				// build the bounds within the query should look
+				$radius = Extension_GeocodingField::geoRadius($lat, $lng, $radius, ($unit[0] == 'k'));
+
+				$where .= sprintf(
+					" AND `t%d`.`latitude` BETWEEN %s AND %s AND `t%d`.`longitude` BETWEEN %s AND %s",
+					$field_id, $radius['latMIN'], $radius['latMAX'],
+					$field_id, $radius['lonMIN'], $radius['lonMAX']
+				);
+
+				$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
+
 			}
-			// otherwise the origin needs geocoding
-			else {
-				$geocode = $this->__geocodeAddress($origin);
-				if ($geocode) $geocode = explode(',', $geocode);
-				$lat = trim($geocode[0]);
-				$lng = trim($geocode[1]);
-			}
-			
-			// if we don't have a decent set of coordinates, we can't query
-			if (is_null($lat) || is_null($lng)) return true;
-			
-			$this->_filter_origin['latitude'] = $lat;
-			$this->_filter_origin['longitude'] = $lng;
-			$this->_filter_origin['unit'] = $unit[0];
-			
-			// build the bounds within the query should look
-			$radius = $this->_driver->geoRadius($lat, $lng, $radius, ($unit[0] == 'k'));
-			
-			$where .= sprintf(
-				" AND `t%d`.`latitude` BETWEEN %s AND %s AND `t%d`.`longitude` BETWEEN %s AND %s",
-				$field_id, $radius['latMIN'], $radius['latMAX'],
-				$field_id, $radius['lonMIN'], $radius['lonMAX']
-			);
-			
-			$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
-			
+		
+			return true;
+		
 		}
-		
-		return true;
-		
-	}
 		
 	}
