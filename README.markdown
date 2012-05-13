@@ -1,9 +1,6 @@
 # Geocoding Field
 
-* Version: 1.0
-* Authors: Jonas Coch <jonas@klaftertief.de>
-* Build Date: 2012-05-12
-* Requirements: Symphony 2.3
+A Symphony CMS extension that populates fields with geocoding information using the combined values of other fields.
 
 ## Installation
 
