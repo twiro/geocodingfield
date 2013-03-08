@@ -14,6 +14,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="1.0.1" date="2013-03-08" min="2.3">
+			- Use Geocoding API (V3)
+		</release>
 		<release version="1.0" date="2012-05-12" min="2.3">
 			- Symphony 2.3 compatibility
 			- Show map of location in entry table and publish panel
