@@ -160,7 +160,7 @@
 				$div->appendChild($longitude);
 				$frame->appendChild($map);
 				$frame->appendChild($div);
-				$wrapper->appendChild(new XMLElement('p', $this->get('label'), array('class' => 'label')));
+				$wrapper->appendChild(new XMLElement('label', $this->get('label'), array('class' => 'label')));
 				$wrapper->appendChild($frame);
 			} else {
 				$wrapper->addClass('irrelevant');
