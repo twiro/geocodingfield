@@ -2,8 +2,9 @@
 <extension id="geocodingfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
 	<name>Field: Geocoding</name>
 	<description>Populates fields with geocoding information using the combined values of other fields.</description>
-	<repo type="github">https://github.com/klaftertief/geocodingfield</repo>
-	<url type="discuss">http://symphony-cms.com/discuss/thread/46536/</url>
+	<repo type="github">https://github.com/twiro/geocodingfield</repo>
+	<url type="discuss">http://www.getsymphony.com/discuss/thread/46536/</url>
+	<url type="issues">https://github.com/twiro/geocodingfield/issues/</url>
 	<types>
 		<type>Field Types</type>
 	</types>
@@ -14,17 +15,17 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="1.0.2" date="2013-09-17" min="2.3">
-			- Updated field label to follow Symphony core field structure by using label element instead of p element.
+		<release version="1.0.2" date="2013-09-17" min="2.3.0" max="2.6.x">
+			- Updated field label to follow Symphony core field structure by using `<label>` instead of `<p>`.
 		</release>
-		<release version="1.0.1" date="2013-03-08" min="2.3">
+		<release version="1.0.1" date="2013-03-08" min="2.3.0">
 			- Use Geocoding API (V3)
 		</release>
-		<release version="1.0" date="2012-05-12" min="2.3">
+		<release version="1.0" date="2012-05-12" min="2.3.0">
 			- Symphony 2.3 compatibility
 			- Show map of location in entry table and publish panel
 			- Add distance to datasource XML output when the field is used as a filter
 		</release>
-		<release version="0.7" date="2011-02-01" min="2.2"/>
+		<release version="0.7" date="2011-02-01" min="2.2.0"/>
 	</releases>
 </extension>
