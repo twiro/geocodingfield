@@ -16,7 +16,7 @@
 	</authors>
 	<releases>
 		<release version="1.0.2" date="2013-09-17" min="2.3.0" max="2.6.x">
-			- Updated field label to follow Symphony core field structure by using `<label>` instead of `<p>`.
+			- Updated field label to follow Symphony core field structure by using `&lt;label&lt;` instead of `&lt;p&lt;`.
 		</release>
 		<release version="1.0.1" date="2013-03-08" min="2.3.0">
 			- Use Geocoding API (V3)
