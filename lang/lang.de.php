@@ -9,15 +9,15 @@
 		),
 		'release-date' => '2010-06-20'
 	);
-	
-	
+
+
 	/*
 	 * EXTENSION: Geocoding Field
 	 * Localisation strings
 	 */
 
 	$dictionary = array(
-	
+
 		'Geocoding' =>
 		'Geokodierung',
 
@@ -26,10 +26,10 @@
 
 		'Expression' =>
 		'Ausdruck',
-		
-		'To access the other fields, use XPath: <code>{entry/field-one} static text {entry/field-two}</code>.' =>
+
+		'Use XPath to access other fields: <code>{entry/field-one} static text {entry/field-two}</code>.' =>
 		'Benutze XPath, um auf andere Felder zuzugreifen: <code>{entry/feld-eins} statischer Text {entry/feld-zwei}</code>.',
-		
+
 		' Hide this field on publish page' =>
 		' Verstecke dieses Feld auf der Veröffentlichungs-Seite',
 
