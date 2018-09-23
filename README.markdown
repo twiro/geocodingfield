@@ -2,17 +2,25 @@
 
 A Symphony CMS extension that populates fields with geocoding information using the combined values of other fields.
 
+## Dependencies
+
+Geocoding Field uses the [Google Maps Platform][1] and requires an [Google API Key][2] for both the [Geocoding API][3] as well as the [Maps Static API][4].
+
+
 ## Installation
 
-1. Upload the 'geocodingfield' folder in this archive to your Symphony 'extensions' folder.
-2. Enable it by selecting the "Field: Geocoding", choose Enable from the with-selected menu, then click Apply.
-3. You can now add the "Geocoding" field to your sections.
+1. Upload the `/geocodingfield` folder in this archive to your Symphony `/extensions` folder.
+2. Go to **System > Extensions** in your Symphony admin area.
+3. Enable the extension by selecting the '**Field: Geocoding**', choose '**Enable**' from the '**With Selected…**' menu, then click '**Apply**'.
+4. Go to **System > Preferences** and set up your **Google API Key**.
+5. You can now add the '**Geocoding**' field to your sections.
+
 
 ## Configuration
 
-In the field settings you define an XPath to create a new value from the XML data of other fields which then gets geocoded.
+When adding this field to a section, you will be asked to to define an `expression`. Like in the [Reflection Field][5] this `expression` gives you access to the values of other fields from the current entry via XPath – when saving an entry the generated output from the `expression` will be sent to the [Google Geocoding API][3] which will then try its best to return a matching set of coordinates.
 
-For example, if you have a section with two fields "Country" and "City", you could use the Geocoding Field to get the location by setting its expression to `{entry/country}, {entry/city}`.
+For example, if you have a section with two fields "Country" and "City", you could use the Geocoding Field to get the matching coordinates by setting the expression to `{entry/country}, {entry/city}`.
 
 ## Data Source Filtering
 
@@ -38,7 +46,7 @@ Attached to a page invoked as:
 
 	/?distance=30&unit=km&origin=London,England
 
-## Data Source XML result
+## Data Source Output
 
 The XML output of the field looks like this:
 
@@ -56,9 +64,12 @@ The `from` attribute is the latitude/longitude resolved from the DS filter (the 
 
 ## Credits
 
-This extensions is heavily based on the [Reflection Field][1] and the [Map Location Field][2].
+This extensions is heavily based on the [Reflection Field][5] and the [Map Location Field][6].
 
-
-[1]: http://symphony-cms.com/download/extensions/view/20737/
-[2]: http://symphony-cms.com/download/extensions/view/35942/
+[1]: https://cloud.google.com/maps-platform/
+[2]: https://developers.google.com/maps/documentation/geocoding/get-api-key
+[3]: https://developers.google.com/maps/documentation/geocoding/
+[4]: https://developers.google.com/maps/documentation/maps-static/
+[5]: https://github.com/symphonists/reflectionfield/
+[6]: https://github.com/symphonists/maplocationfield/
 
