@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<extension id="geocodingfield" status="released" xmlns="http://symphony-cms.com/schemas/extension/1.0">
+<extension id="geocodingfield" status="released" xmlns="http://getsymphony.com/schemas/extension/1.0">
 	<name>Field: Geocoding</name>
 	<description>Populates fields with geocoding information using the combined values of other fields.</description>
 	<repo type="github">https://github.com/twiro/geocodingfield/</repo>
-	<url type="discuss">https://www.getsymphony.com/discuss/thread/46536/</url>
 	<url type="issues">https://github.com/twiro/geocodingfield/issues/</url>
+	<url type="discuss">https://www.getsymphony.com/discuss/thread/46536/</url>
 	<types>
 		<type>Field Types</type>
 	</types>
@@ -15,7 +15,7 @@
 		</author>
 	</authors>
 	<releases>
-		<release version="2.0.0" date="2018-08-11" min="2.5" max="2.x.x">
+		<release version="2.0.0.beta" date="2018-09-23" min="2.5" max="2.x.x">
 			- PHP 7 Support
 			- Symphony 2.7 compatibility
 			- Add Google Maps API Key to configuration
