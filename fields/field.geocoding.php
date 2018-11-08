@@ -87,7 +87,7 @@ class FieldGeocoding extends Field
      * @since version 1.0.0
      */
 
-    public function displaySettingsPanel(&$wrapper, $errors = null)
+    public function displaySettingsPanel(XMLElement &$wrapper, $errors = null)
     {
         parent::displaySettingsPanel($wrapper, $errors);
 
@@ -505,7 +505,7 @@ class FieldGeocoding extends Field
      * @since version 1.0.0
      */
 
-     function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false)
+    function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false)
     {
 
         // Symphony by default splits filters by commas. We want commas, so

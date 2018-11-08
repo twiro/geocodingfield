@@ -2,6 +2,7 @@
 
 class Extension_GeocodingField extends Extension
 {
+
     /*------------------------------------------------------------------------*/
     /*  DEFINITION
     /*------------------------------------------------------------------------*/
@@ -118,7 +119,8 @@ class Extension_GeocodingField extends Extension
      * @since version 1.0.0
      */
 
-    public function getSubscribedDelegates() {
+    public function getSubscribedDelegates()
+    {
         return array(
             array(
                 'page' => '/backend/',
@@ -152,13 +154,15 @@ class Extension_GeocodingField extends Extension
     /*  COMPILE
     /*------------------------------------------------------------------------*/
 
-    public function compileBackendFields($context) {
+    public function compileBackendFields($context)
+    {
         foreach (self::$fields as $field) {
             $field->compile($context['entry']);
         }
     }
 
-    public function compileFrontendFields($context) {
+    public function compileFrontendFields($context)
+    {
         foreach (self::$fields as $field) {
             $field->compile($context['entry']);
         }
@@ -249,53 +253,54 @@ class Extension_GeocodingField extends Extension
      * @since version 1.0.0
      */
 
-	public function getXPath($entry) {
-		$entry_xml = new XMLElement('entry');
-		$data = $entry->getData();
-		$fields = array();
+	public function getXPath($entry)
+	{
+        $entry_xml = new XMLElement('entry');
+        $data = $entry->getData();
+        $fields = array();
+        
+        $entry_xml->setAttribute('id', $entry->get('id'));
+        
+        $associated = $entry->fetchAllAssociatedEntryCounts();
 
-		$entry_xml->setAttribute('id', $entry->get('id'));
+        if (is_array($associated) and !empty($associated)) {
+            foreach ($associated as $section => $count) {
+                $handle = Symphony::Database()->fetchVar('handle', 0, "
+                    SELECT
+                        s.handle
+                    FROM
+                        `tbl_sections` AS s
+                    WHERE
+                        s.id = '{$section}'
+                    LIMIT 1
+                ");
+                
+                $entry_xml->setAttribute($handle, (string)$count);
+            }
+        }
 
-		$associated = $entry->fetchAllAssociatedEntryCounts();
+        // Add fields:
+        foreach ($data as $field_id => $values) {
+            if (empty($field_id)) continue;
+            
+            $field = FieldManager::fetch($field_id);
+            $field->appendFormattedElement($entry_xml, $values, false, null);
+        }
 
-		if (is_array($associated) and !empty($associated)) {
-			foreach ($associated as $section => $count) {
-				$handle = Symphony::Database()->fetchVar('handle', 0, "
-					SELECT
-						s.handle
-					FROM
-						`tbl_sections` AS s
-					WHERE
-						s.id = '{$section}'
-					LIMIT 1
-				");
+        $xml = new XMLElement('data');
+        $xml->appendChild($entry_xml);
 
-				$entry_xml->setAttribute($handle, (string)$count);
-			}
-		}
+        $dom = new DOMDocument();
+        $dom->strictErrorChecking = false;
+        $dom->loadXML($xml->generate(true));
 
-		// Add fields:
-		foreach ($data as $field_id => $values) {
-			if (empty($field_id)) continue;
+        $xpath = new DOMXPath($dom);
 
-			$field = FieldManager::fetch($field_id);
-			$field->appendFormattedElement($entry_xml, $values, false, null);
-		}
+        if (version_compare(phpversion(), '5.3', '>=')) {
+        	$xpath->registerPhpFunctions();
+        }
 
-		$xml = new XMLElement('data');
-		$xml->appendChild($entry_xml);
-
-		$dom = new DOMDocument();
-		$dom->strictErrorChecking = false;
-		$dom->loadXML($xml->generate(true));
-
-		$xpath = new DOMXPath($dom);
-
-		if (version_compare(phpversion(), '5.3', '>=')) {
-			$xpath->registerPhpFunctions();
-		}
-
-		return $xpath;
+        return $xpath;
 	}
 
     /**
@@ -307,7 +312,8 @@ class Extension_GeocodingField extends Extension
      * @since version 1.0.0
      */
 
-    public static function geoRadius($lat, $lng, $rad, $kilometers=false) {
+    public static function geoRadius($lat, $lng, $rad, $kilometers=false)
+    {
         $radius = ($kilometers) ? ($rad * 0.621371192) : $rad;
 
         (float)$dpmLAT = 1 / 69.1703234283616;
@@ -336,7 +342,8 @@ class Extension_GeocodingField extends Extension
      * @since version 1.0.0
      */
 
-    public static function geoDistance($lat1, $lon1, $lat2, $lon2, $unit) {
+    public static function geoDistance($lat1, $lon1, $lat2, $lon2, $unit)
+    {
         $theta = $lon1 - $lon2;
         $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
         $dist = acos($dist);
